@@ -15,7 +15,7 @@ for (let i = 0; i < length; i++) {
  * @param y
  * if the x value is even or 0 then the square is dark if the y value is odd based on the x and y value starting at 0
  * if the x value is odd then the sqaure is dark if the y value is even o 0 on the x and y value starting at 0
- * @returns string
+ * @returns boolean
  */
 
 function squareIsDark(x: number, y: number): boolean {
