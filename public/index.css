@@ -1,0 +1,56 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-dark: #779556;
+  --color-light: #ebecd0;
+  --piece-dark: #575452;
+  --piece-light: #f9f9f9;
+  --background-light: #312e2b;
+  --background-dark: #272522;
+  --white: #fff;
+  --black: #222;
+  --square-height: 100px;
+}
+
+body {
+  font-family: 'roboto', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Roboto Slab', serif;
+}
+
+.header,
+.footer {
+  height: 10vh;
+  background-color: var(--background-dark);
+}
+
+.board-container {
+  height: 80vh;
+  background-color: var(--background-light);
+  display: grid;
+  place-items: center;
+}
+
+.header-content {
+  color: var(--white);
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.dark {
+  background-color: var(--color-dark);
+}
+.light {
+  background-color: var(--color-light);
+}

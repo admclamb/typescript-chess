@@ -1,0 +1,20 @@
+{
+  "name": "typescript-chess",
+  "version": "1.0.0",
+  "description": "chess board game made with typescript",
+  "main": "index.js",
+  "scripts": {
+    "start:build": "tsc -w",
+    "start:run": "nodemon build/index.js",
+    "start": "concurrently npm:start:*"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.7.3"
+  },
+  "devDependencies": {
+    "concurrently": "^7.2.1",
+    "nodemon": "^2.0.16"
+  }
+}
