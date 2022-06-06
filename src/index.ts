@@ -20,7 +20,7 @@ function createBoardSquare(x: number, y: number): void {
   const fileLetters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   const div = document.createElement('div');
   // Create id of element for chess notation
-  const id: string = fileLetters[x] + y;
+  const id: string = fileLetters[x] + (y + 1);
   const isDark = squareIsDark(x, y);
   div.setAttribute('id', id);
   div.classList.add('square', isDark ? 'dark' : 'light');

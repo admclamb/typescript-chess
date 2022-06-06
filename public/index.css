@@ -58,6 +58,9 @@ h6 {
 .square {
   width: var(--square-length);
   height: var(--square-length);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .dark {
@@ -65,4 +68,8 @@ h6 {
 }
 .light {
   background-color: var(--color-light);
+}
+
+i {
+  z-index: 100;
 }
