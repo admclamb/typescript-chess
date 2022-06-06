@@ -1,7 +1,9 @@
 import { Board } from './Board';
 
-const gameBoard = new Board();
+const board = new Board();
+
 const boardElement = document.querySelector('#board');
+const squareElements = document.querySelectorAll('.board > div');
 /**
  *
  * @param x
@@ -15,6 +17,20 @@ function squareIsDark(x: number, y: number): boolean {
   return (x % 2 === 0 && y % 2 !== 0) || (x % 2 !== 0 && y % 2 === 0);
 }
 
+function handleSquareClick(event: any) {
+  // Remove all active classes before adding one
+  document
+    .querySelectorAll('.active')
+    .forEach((sqaure) => sqaure.classList.remove('active'));
+  if (event.target.classList.contains('fa-solid')) {
+    // If the event target is the piece add to the parent square
+    // element
+    event.target.parentNode.classList.add('active');
+  } else {
+    event.target.classList.add('active');
+  }
+}
+
 function createBoardSquare(x: number, y: number): void {
   // file letters are to represent each file
   const fileLetters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -25,6 +41,7 @@ function createBoardSquare(x: number, y: number): void {
   div.setAttribute('id', id);
   div.classList.add('square', isDark ? 'dark' : 'light');
   boardElement?.appendChild(div);
+  div.addEventListener('click', handleSquareClick);
 }
 
 function renderBoard(): void {
@@ -37,6 +54,39 @@ function renderBoard(): void {
   }
 }
 
-function renderPieces(): void {}
+function renderPieces(): void {
+  // file letters are to represent each file
+  const fileLetters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+  for (const rank of board.spots) {
+    for (const spot of rank) {
+      console.log(spot.getPieceName());
+      if (!spot.piece) {
+        break;
+      }
+      const color = spot.getPieceColor();
+      const type = spot.getPieceName();
+      // get the notation of the square
+      const [x, y] = spot.getCoordinates();
+      const notation = fileLetters[x] + (y + 1);
+      const squareElement = document.getElementById(notation);
+      // Adding piece to board
+      const pieceElement = document.createElement('i');
+      pieceElement.classList.add(
+        'fa-3x',
+        'fa-solid',
+        type ? `fa-chess-${type}` : '',
+        color ? color : ''
+      );
+      // Alternative of chess pieces is to add -piece to the end
+      squareElement?.appendChild(pieceElement);
+    }
+  }
+}
 
-renderBoard();
+function main(): void {
+  board.initGame();
+  console.log(board.spots);
+  renderBoard();
+  renderPieces();
+}
+main();

@@ -7,6 +7,8 @@
 :root {
   --color-dark: #779556;
   --color-light: #ebecd0;
+  --color-active: #fffc4980;
+  --color-invalid: rgba(252, 130, 99, 0.61);
   --piece-dark: #575452;
   --piece-light: #f9f9f9;
   --background-light: #312e2b;
@@ -14,6 +16,7 @@
   --white: #fff;
   --black: #222;
   --square-length: 85px;
+  /* 85px by default square length */
 }
 
 body {
@@ -50,7 +53,7 @@ h6 {
 
 .board {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   width: calc(var(--square-length) * 8);
   height: calc(var(--square-length) * 8);
 }
@@ -61,6 +64,15 @@ h6 {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.white {
+  color: var(--piece-light);
+  text-shadow: 0 0 4px var(--black);
+}
+.black {
+  color: var(--piece-dark);
 }
 
 .dark {
@@ -68,6 +80,14 @@ h6 {
 }
 .light {
   background-color: var(--color-light);
+}
+
+.active:before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-active);
+  position: absolute;
 }
 
 i {
