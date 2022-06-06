@@ -13,7 +13,7 @@
   --background-dark: #272522;
   --white: #fff;
   --black: #222;
-  --square-height: 100px;
+  --square-length: 85px;
 }
 
 body {
@@ -46,6 +46,18 @@ h6 {
   color: var(--white);
   text-align: center;
   padding-top: 1rem;
+}
+
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(var(--square-length) * 8);
+  height: calc(var(--square-length) * 8);
+}
+
+.square {
+  width: var(--square-length);
+  height: var(--square-length);
 }
 
 .dark {
