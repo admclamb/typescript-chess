@@ -64,7 +64,7 @@ h6 {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  /* position: relative; */
 }
 
 .white {
@@ -83,13 +83,15 @@ h6 {
 }
 
 .active:before {
-  content: '';
+  /* content: '';
   width: 100%;
   height: 100%;
   background-color: var(--color-active);
   position: absolute;
+  */
 }
 
 i {
   z-index: 100;
+  position: absolute;
 }

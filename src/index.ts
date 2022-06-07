@@ -1,7 +1,7 @@
 import { Board } from './Board';
 
 const board = new Board();
-
+console.log(board);
 const boardElement = document.querySelector('#board');
 const squareElements = document.querySelectorAll('.board > div');
 /**
@@ -31,6 +31,30 @@ function handleSquareClick(event: any) {
   }
 }
 
+let isDown: boolean = false;
+let mousePosition;
+let offset = [0, 0];
+
+function handleDown(event: any) {
+  isDown = true;
+}
+
+function handleUp(event: any) {
+  isDown = false;
+}
+
+function movePiece(event: any) {
+  event.preventDefault();
+  if (isDown) {
+    let deltaX = event.clientX;
+    let deltaY = event.clientY;
+    const rect: any = boardElement?.getBoundingClientRect();
+    console.log(event.clientX, event.clientY, rect);
+    event.target.style.left = deltaX - rect + 'px';
+    event.target.style.top = deltaY - rect + 'px';
+  }
+}
+
 function createBoardSquare(x: number, y: number): void {
   // file letters are to represent each file
   const fileLetters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -42,6 +66,9 @@ function createBoardSquare(x: number, y: number): void {
   div.classList.add('square', isDark ? 'dark' : 'light');
   boardElement?.appendChild(div);
   div.addEventListener('click', handleSquareClick);
+  div.addEventListener('mousedown', handleDown, true);
+  div.addEventListener('mouseup', handleUp, true);
+  div.addEventListener('mousemove', movePiece, true);
 }
 
 function renderBoard(): void {
