@@ -32,27 +32,37 @@ function handleSquareClick(event: any) {
 }
 
 let isDown: boolean = false;
-let mousePosition;
-let offset = [0, 0];
-
+let originalPosition: number[] = [];
+let currentPosition: number[] = [];
+let currentPiece: any;
+let targetSquare: any;
 function handleDown(event: any) {
   isDown = true;
+  originalPosition = [event.clientX, event.clientY];
+  if (event.target.firstChild) {
+    currentPiece = event.target.firstChild;
+  } else if (event.target.classList.contains('fa-solid')) {
+    currentPiece = event.target;
+  }
 }
 
 function handleUp(event: any) {
   isDown = false;
+  originalPosition = [];
+  currentPiece = '';
 }
+
+function updatePiecePosition() {}
 
 function movePiece(event: any) {
   event.preventDefault();
   if (isDown) {
-    let deltaX = event.clientX;
-    let deltaY = event.clientY;
-    const rect: any = boardElement?.getBoundingClientRect();
-    console.log(event.clientX, event.clientY, rect);
-    event.target.style.left = deltaX - rect + 'px';
-    event.target.style.top = deltaY - rect + 'px';
+    currentPosition = [event.clientX, event.clientY];
+    currentPiece.style.transform = `translate(${
+      currentPosition[0] - originalPosition[0]
+    }px, ${currentPosition[1] - originalPosition[1]}px)`;
   }
+  updatePiecePosition();
 }
 
 function createBoardSquare(x: number, y: number): void {
