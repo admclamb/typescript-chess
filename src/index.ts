@@ -1,9 +1,7 @@
 import { Board } from './Board';
 
 const board = new Board();
-console.log(board);
 const boardElement: Element | null = document.querySelector('#board');
-console.log(boardElement);
 const squareElements = document.querySelectorAll('.board > div');
 /**
  *
@@ -45,21 +43,20 @@ function handleDown(event: any) {
   } else if (event.target.classList.contains('fa-solid')) {
     currentPiece = event.target;
   }
+  console.log(currentPiece);
+  currentPiece.style.zIndex = 100;
 }
 
 function getSquareFromCoordinates(x: number, y: number): number[] {
   if (boardElement instanceof Element) {
-    console.log(currentPosition);
     const rect = boardElement.getBoundingClientRect();
     const squareLength: number = parseInt(
       getComputedStyle(boardElement).getPropertyValue('--square-length')
     );
     const rectX = x - rect.x;
     const rectY = rect.bottom - y;
-    console.log(rectX, rectY);
     const targetYSquare = Math.floor(rectY / squareLength);
     const targetXSquare = Math.floor(rectX / squareLength);
-    console.log(targetXSquare, targetYSquare);
     return [targetXSquare, targetYSquare];
   }
   throw new Error('There is not instance of board.');
@@ -71,18 +68,15 @@ function handleUp(event: any) {
     currentPosition[0],
     currentPosition[1]
   );
-  console.log(originalPosition);
   const [fromX, fromY] = getSquareFromCoordinates(
     originalPosition[0],
     originalPosition[1]
   );
-  console.log('x', fromX, toX);
-  console.log('y', fromY, toY);
   updatePiecePosition([fromX, fromY], [toX, toY]);
+  currentPiece.style.zIndex = 5;
 }
 
 function updatePiecePosition(from: number[], to: number[]) {
-  console.log('from:', from, 'to: ', to);
   currentPiece.remove();
   board.movePieve(from, to);
 
@@ -128,37 +122,47 @@ function renderBoard(): void {
 }
 
 function renderPieces(): void {
-  console.log(board.spots);
   // file letters are to represent each file
   const fileLetters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   for (const rank of board.spots) {
     for (const spot of rank) {
-      if (!spot.piece) {
-        break;
+      if (spot.piece) {
+        const color = spot.getPieceColor();
+        const type = spot.getPieceName();
+        // get the notation of the square
+        const [x, y] = spot.getCoordinates();
+        const notation = fileLetters[x] + (y + 1);
+        const squareElement = document.getElementById(notation);
+        console.log('squareElement: ', squareElement);
+        if (!squareElement?.firstChild) {
+          // Adding piece to board
+          const pieceElement = document.createElement('i');
+          pieceElement.classList.add(
+            'fa-3x',
+            'fa-solid',
+            type ? `fa-chess-${type}` : '',
+            color ? color : ''
+          );
+          // Alternative of chess pieces is to add -piece to the end
+          squareElement?.appendChild(pieceElement);
+        } else {
+          // Adding piece to board
+          const pieceElement = document.createElement('i');
+          pieceElement.classList.add(
+            'fa-3x',
+            'fa-solid',
+            type ? `fa-chess-${type}` : '',
+            color ? color : ''
+          );
+          squareElement.replaceChild(pieceElement, squareElement.firstChild);
+        }
       }
-      const color = spot.getPieceColor();
-      const type = spot.getPieceName();
-      // get the notation of the square
-      const [x, y] = spot.getCoordinates();
-      const notation = fileLetters[x] + (y + 1);
-      const squareElement = document.getElementById(notation);
-      // Adding piece to board
-      const pieceElement = document.createElement('i');
-      pieceElement.classList.add(
-        'fa-3x',
-        'fa-solid',
-        type ? `fa-chess-${type}` : '',
-        color ? color : ''
-      );
-      // Alternative of chess pieces is to add -piece to the end
-      squareElement?.appendChild(pieceElement);
     }
   }
 }
 
 function main(): void {
   board.initGame();
-  console.log(board.spots);
   renderBoard();
   renderPieces();
 }

@@ -15,8 +15,17 @@ export class Spot {
   }
 
   occupySpot(piece: Piece): void {
+    console.log(this.piece);
+    console.log(this.isOccupied());
+    if (this.isOccupied()) {
+      this.removePiece();
+    }
+    console.log(this.piece);
+    console.log(this.isOccupied());
     this.piece = piece;
     this.piece.setPiecePosition(this.x, this.y);
+    console.log(this.piece);
+    console.log(this.piece, this.x, this.y);
   }
   isOccupied(): boolean {
     return this.piece !== null;
