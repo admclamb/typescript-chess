@@ -19,6 +19,11 @@ export class Board {
     return this.spots[y][x];
   }
 
+  public movePieve(fromIndex: number[], toIndex: number[]) {
+    const piece = this.getSpot(fromIndex[0], fromIndex[1]).removePiece();
+    this.getSpot(toIndex[0], toIndex[1]).occupySpot(piece);
+  }
+
   public initGame() {
     // Init white pices
     const rankLength = 8;

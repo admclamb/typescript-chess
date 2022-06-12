@@ -21,7 +21,11 @@ export class Spot {
   isOccupied(): boolean {
     return this.piece !== null;
   }
-  removePiece(): any {}
+  removePiece(): Piece {
+    const piece = this.piece;
+    this.piece = null;
+    return piece;
+  }
 
   getPieceColor(): string | null {
     if (!this.piece) {

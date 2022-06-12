@@ -2,7 +2,8 @@ import { Board } from './Board';
 
 const board = new Board();
 console.log(board);
-const boardElement = document.querySelector('#board');
+const boardElement: Element | null = document.querySelector('#board');
+console.log(boardElement);
 const squareElements = document.querySelectorAll('.board > div');
 /**
  *
@@ -46,23 +47,58 @@ function handleDown(event: any) {
   }
 }
 
-function handleUp(event: any) {
-  isDown = false;
-  originalPosition = [];
-  currentPiece = '';
+function getSquareFromCoordinates(x: number, y: number): number[] {
+  if (boardElement instanceof Element) {
+    console.log(currentPosition);
+    const rect = boardElement.getBoundingClientRect();
+    const squareLength: number = parseInt(
+      getComputedStyle(boardElement).getPropertyValue('--square-length')
+    );
+    const rectX = x - rect.x;
+    const rectY = rect.bottom - y;
+    console.log(rectX, rectY);
+    const targetYSquare = Math.floor(rectY / squareLength);
+    const targetXSquare = Math.floor(rectX / squareLength);
+    console.log(targetXSquare, targetYSquare);
+    return [targetXSquare, targetYSquare];
+  }
+  throw new Error('There is not instance of board.');
 }
 
-function updatePiecePosition() {}
+function handleUp(event: any) {
+  isDown = false;
+  const [toX, toY] = getSquareFromCoordinates(
+    currentPosition[0],
+    currentPosition[1]
+  );
+  console.log(originalPosition);
+  const [fromX, fromY] = getSquareFromCoordinates(
+    originalPosition[0],
+    originalPosition[1]
+  );
+  console.log('x', fromX, toX);
+  console.log('y', fromY, toY);
+  updatePiecePosition([fromX, fromY], [toX, toY]);
+}
+
+function updatePiecePosition(from: number[], to: number[]) {
+  console.log('from:', from, 'to: ', to);
+  currentPiece.remove();
+  board.movePieve(from, to);
+
+  renderPieces();
+}
 
 function movePiece(event: any) {
   event.preventDefault();
-  if (isDown) {
-    currentPosition = [event.clientX, event.clientY];
-    currentPiece.style.transform = `translate(${
-      currentPosition[0] - originalPosition[0]
-    }px, ${currentPosition[1] - originalPosition[1]}px)`;
+  if (boardElement) {
+    if (isDown) {
+      currentPosition = [event.clientX, event.clientY];
+      currentPiece.style.transform = `translate(${
+        currentPosition[0] - originalPosition[0]
+      }px, ${currentPosition[1] - originalPosition[1]}px)`;
+    }
   }
-  updatePiecePosition();
 }
 
 function createBoardSquare(x: number, y: number): void {
@@ -92,11 +128,11 @@ function renderBoard(): void {
 }
 
 function renderPieces(): void {
+  console.log(board.spots);
   // file letters are to represent each file
   const fileLetters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
   for (const rank of board.spots) {
     for (const spot of rank) {
-      console.log(spot.getPieceName());
       if (!spot.piece) {
         break;
       }
